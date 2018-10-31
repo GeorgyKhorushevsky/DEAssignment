@@ -24,6 +24,20 @@ def Exact(self, root, canv, x0, y0, X, grid):
         yf, xf = y, xcur
 
 def Euler(self, root, canv, x0, y0, X, grid):
+    # y'=xy^2+3xy
+    # y1=y0+(x0y0^2+3x0y0)*(1/grid)
+    # x1=y0+1/grid
+    h=1/grid
+    xf, yf = x0, y0
+    print("Hey, pidor")
+    scale = abs((init_x - x_end)) / X
+    for x in range(ceil(x0*grid), ceil(X*grid)):
+        xcur=x*h
+        y = yf+(xf*(yf**2)+3*xf*yf)*h
+        if abs(yf - y) < grid:
+            canv.create_line(init_x + scale * xcur, init_y - scale * y/2, init_x + scale * xf, init_y - scale * yf/2,
+                             fill="yellow", width=1.5)
+        yf, xf = y, xcur
     print("Ti pidor")
 
 def Euler_i(self, root, canv, x0, y0, X, grid):

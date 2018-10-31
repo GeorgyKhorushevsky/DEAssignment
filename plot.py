@@ -18,11 +18,17 @@ label_X = Label(root, text=" X:", font="60")
 entry_X = Entry(root, text="default=5.5", font="60")
 label_grid = Label(root, text="GRID", font="60")
 entry_grid = Entry(root, text="default=0.1", font="60")
+
+entry_x0.insert(0, "0")
+entry_y0.insert(0, "3")
+entry_X.insert(0, "5.5")
+entry_grid.insert(0, "1000")
+
 exact_g, euler, euler_i, rc = BooleanVar(), BooleanVar(), BooleanVar(), BooleanVar(),
 exact_check = Checkbutton(root, text="Exact solution", font="50", variable=exact_g)
-euler_check = Checkbutton(root, text="Euler's method", font="50")
-euler_i_check = Checkbutton(root, text="Euler's improved", font="50")
-rc_check = Checkbutton(root, text="Runge-Kutta method", font="50")
+euler_check = Checkbutton(root, text="Euler's method", font="50", variable=euler)
+euler_i_check = Checkbutton(root, text="Euler's improved", font="50", variable=euler_i)
+rc_check = Checkbutton(root, text="Runge-Kutta method", font="50", variable=rc)
 
 x0, y0, xm, ym = 340, 250, 780, 20
 
@@ -39,11 +45,18 @@ def clean():
 
 clean()
 
+def clean_but():
+    clean()
+    entry_x0.delete(0, END)
+    entry_y0.delete(0, END)
+    entry_X.delete(0, END)
+    entry_grid.delete(0, END)
 
 def apply():
     grap = my_grap()
     clean()
     print(exact_g.get())
+    print(euler.get())
     if exact_g.get():
         grap.exact(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), float(entry_grid.get()))
     if euler.get():
@@ -77,6 +90,8 @@ buttom_frame.pack(side=BOTTOM)
 
 apply_but = Button(text="APPLY", background="#148", foreground="#ccc", padx="14", pady="7", font="13", command=apply)
 apply_but.place(x=50, y=350)
+clean_but = Button(text="CLEAN", background="#aaa", foreground="#000", padx="14", pady="7", font="13", command=clean_but)
+clean_but.place(x=180, y=350)
 error_but = Button(text="SHOW ERRORS", background="#000", foreground="#ccc", padx="14", pady="7", font="13",
                    command=error)
 error_but.place(x=50, y=430)
