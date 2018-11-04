@@ -1,15 +1,35 @@
 from math import *
 from tkinter import *
-
+from Error import Error
 from my_grap import my_grap
 
 root = Tk()
+root1 = Tk()
+root1.title("DE Error table")
+root1.geometry("400x400")
+
 
 root.title("DE graphical representation")
 root.geometry("850x500")
+
+
+
 default_color = "blue"
 canv = Canvas(root, width=850, heigh=500)
+
 canv.pack()
+
+scrollbar = Scrollbar(root1, orient=VERTICAL)
+scrollbar.pack(fill=Y, side=RIGHT)
+listbox = Listbox(root1)
+listbox.pack(fill=BOTH, expand=1)
+
+
+
+listbox.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=listbox.yview)
+
+
 label_x0 = Label(root, text="x0:", font="60")
 entry_x0 = Entry(root, text="default=0", foreground="black", font="60")
 label_y0 = Label(root, text="y0:", font="60")
@@ -30,44 +50,55 @@ euler_check = Checkbutton(root, text="Euler's method", font="50", variable=euler
 euler_i_check = Checkbutton(root, text="Euler's improved", font="50", variable=euler_i)
 rc_check = Checkbutton(root, text="Runge-Kutta method", font="50", variable=rc)
 
-x0, y0, xm, ym = 340, 250, 780, 20
 
 
-def clean():
-    for y in range(0, 500):
+
+def clean(canv):
+    x0, y0, xm, ym = 340, 250, 780, 20
+    for y in range(-1000, 500):
+
         canv.create_line(x0 - 30, y, xm + 70, y, fill="white", arrow=LAST, width=0.1)
 
     canv.create_line(x0 - 10, y0, xm + 10, y0, fill=default_color, arrow=LAST, width=0.1)
     canv.create_line(x0, ym - 10, x0, 2 * y0 - ym + 10, fill=default_color, arrow=FIRST, width=0.1)
-    canv.create_line(x0-30, 0, x0-30, 500, fill="black", width=2)
+    canv.create_line(x0 - 30, 0, x0 - 30, 500, fill="black", width=2)
 
 
+clean(canv)
 
-clean()
 
 def clean_but():
-    clean()
+    clean(canv)
     entry_x0.delete(0, END)
     entry_y0.delete(0, END)
     entry_X.delete(0, END)
     entry_grid.delete(0, END)
 
+
 def apply():
     grap = my_grap()
-    clean()
+    clean(canv)
     print(exact_g.get())
     print(euler.get())
     if exact_g.get():
-        grap.exact(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), float(entry_grid.get()))
+        grap.exact(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
+                   float(entry_grid.get()))
     if euler.get():
-        grap.euler(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), float(entry_grid.get()))
+        grap.euler(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
+                   float(entry_grid.get()))
     if euler_i.get():
-        grap.euler_i(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), float(entry_grid.get()))
+        grap.euler_i(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
+                     float(entry_grid.get()))
     if rc.get():
         grap.rc(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), float(entry_grid.get()))
 
+
+
+
+
 def error():
-    print(entry_grid.get())
+    error = Error()
+    error.all( listbox, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), float(entry_grid.get()))
 
 
 title = Label(root, text="y'=xy^2+3xy", background="#148", foreground="#ccc", padx="25", pady="10", font="100")
@@ -88,11 +119,16 @@ rc_check.place(x=20, y=290)
 buttom_frame = Frame(root)
 buttom_frame.pack(side=BOTTOM)
 
+
 apply_but = Button(text="APPLY", background="#148", foreground="#ccc", padx="14", pady="7", font="13", command=apply)
 apply_but.place(x=50, y=350)
-clean_but = Button(text="CLEAN", background="#aaa", foreground="#000", padx="14", pady="7", font="13", command=clean_but)
+clean_but = Button(text="CLEAN", background="#aaa", foreground="#000", padx="14", pady="7", font="13",
+                   command=clean_but)
 clean_but.place(x=180, y=350)
 error_but = Button(text="SHOW ERRORS", background="#000", foreground="#ccc", padx="14", pady="7", font="13",
                    command=error)
 error_but.place(x=50, y=430)
+
+
 root.mainloop()
+root1.mainloop()

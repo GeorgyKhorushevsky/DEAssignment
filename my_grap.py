@@ -1,7 +1,6 @@
 from math import *
-
 init_x = 340
-init_y = 250
+init_y = 1000
 x_end = 775
 scale = 4
 
