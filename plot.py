@@ -1,12 +1,47 @@
 from math import *
 from tkinter import *
 from Error import Error
+from error_plot import error_plot
 from my_grap import my_grap
+
+default_color = "blue"
+
 
 root = Tk()
 root1 = Tk()
+root2 = Tk()
+root2.title("Error graph")
 root1.title("DE Error table")
 root1.geometry("400x400")
+
+c21, c22 = 1000, 650
+root2.geometry("1000x650")
+canv2 = Canvas(root2, width = c21, heigh = c22)
+canv2.pack()
+
+def clean_error(grid):
+    h = 10
+
+    for y in range(-1000, 1000):
+        canv2.create_line(0, y, c21, y, fill="white", arrow=LAST, width=0.1)
+    for i in range(20):
+        #label = Label(root2, text = str(640*i), font = "24")
+        canv2.create_text(30, 630-(640*i)/20, text=str(640*i), font="Verdana 14")
+        #label.place(x=13, y=630-(640*i)/20)
+    for i in range(0, 10):
+        canv2.create_text(10+int(i*(c21-10)/h), 630, text=str(int((grid/10) * i)), font="Verdana 14")
+        #label = Label(root2, text=str(int((grid/10) * i)), font="24")
+        #label.place(x=10+i*(c21-10)/h, y=630)
+    label_e = Label(root2, text = "YELLOW - EULER", font = "40")
+    label_e.place(x=500, y=30)
+    label_e_i = Label(root2, text="RED - EULER IMPROVED", font="40")
+    label_e_i.place(x=500, y=55)
+    label_rc = Label(root2, text="BLUE - Runge-Kutta", font="40")
+    label_rc.place(x=500, y=80)
+    canv2.create_line( 10, c22, 10, 10, fill=default_color, arrow=LAST, width=0.1)
+    canv2.create_line( 0, c22-10, c21, c22-10, fill=default_color, arrow=LAST, width=0.1)
+
+clean_error(100)
 
 
 root.title("DE graphical representation")
@@ -14,7 +49,6 @@ root.geometry("850x500")
 
 
 
-default_color = "blue"
 canv = Canvas(root, width=850, heigh=500)
 
 canv.pack()
@@ -74,23 +108,37 @@ def clean_but():
     entry_X.delete(0, END)
     entry_grid.delete(0, END)
 
-
+def try_again():
+    root4 = Tk()
+    root4.title("WRONG INPUT. TRY AGAIN.")
+    root4.geometry("400x200")
+    canv4 = Canvas(root4, width = 600, heigh = 400)
+    label_try = Label(root4, text="WRONG INPUT. TRY AGAIN", font="800")
+    label_try.place(x=10, y=10)
+    root4.mainloop()
 def apply():
     grap = my_grap()
     clean(canv)
     print(exact_g.get())
     print(euler.get())
-    if exact_g.get():
-        grap.exact(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
-                   float(entry_grid.get()))
-    if euler.get():
-        grap.euler(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
-                   float(entry_grid.get()))
-    if euler_i.get():
-        grap.euler_i(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
-                     float(entry_grid.get()))
-    if rc.get():
-        grap.rc(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), float(entry_grid.get()))
+    if (float(entry_grid.get())<=0):
+        try_again()
+    else:
+        if exact_g.get():
+            grap.exact(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
+                       float(entry_grid.get()))
+        if euler.get():
+            grap.euler(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
+                       float(entry_grid.get()))
+        if euler_i.get():
+            grap.euler_i(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()),
+                         float(entry_grid.get()))
+        if rc.get():
+            grap.rc(root, canv, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), float(entry_grid.get()))
+        clean_error(int(entry_grid.get()))
+        err = error_plot()
+        err.all(canv2, float(entry_x0.get()), float(entry_y0.get()), float(entry_X.get()), int(entry_grid.get()))
+
 
 
 
@@ -132,3 +180,4 @@ error_but.place(x=50, y=430)
 
 root.mainloop()
 root1.mainloop()
+root2.mainloop()
