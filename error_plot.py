@@ -23,7 +23,6 @@ def Exact(x0, y0, X, grid):
     # y'=xy^2+3xy
     # y = 3/(1-ce^(3x^2/2)) - 3
     # c=y0/exp((3*x0^2)/2)
-    print("mem&")
     init_x = 340
     init_y = 250
     x_end = 775
@@ -148,13 +147,12 @@ def All(self, canv, x0, y0, X, grid):
     # 0 - euler
     # 1 - euler_i
     # 2 - rc
-    scale = 1 / 20
+    scale = (1 / 20)
     for i in range(2, grid):
         y = graph(canv, x0, y0, X, i)
-        print(y, yf)
-        canv.create_line(init_x + i - 1, init_y - scale * yf[0], init_x + i, init_y - scale * y[0], fill="yellow")
-        canv.create_line(init_x + i - 1, init_y - scale * yf[1], init_x + i, init_y - scale * y[1], fill="red")
-        canv.create_line(init_x + i - 1, init_y - scale * yf[2], init_x + i, init_y - scale * y[2], fill="blue")
+        canv.create_line(init_x + (i - 1)*(1000/grid), init_y - scale * yf[0], init_x + (i)*(1000/grid), init_y - scale * y[0], fill="yellow")
+        canv.create_line(init_x + (i - 1)*(1000/grid), init_y - scale * yf[1], init_x + (i)*(1000/grid), init_y - scale * y[1], fill="red")
+        canv.create_line(init_x + (i - 1)*(1000/grid), init_y - scale * yf[2], init_x + (i)*(1000/grid), init_y - scale * y[2], fill="blue")
         yf = y
 
 

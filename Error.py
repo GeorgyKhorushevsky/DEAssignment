@@ -23,7 +23,6 @@ def Exact(x0, y0, X, grid):
     # y'=xy^2+3xy
     # y = 3/(1-ce^(3x^2/2)) - 3
     # c=y0/exp((3*x0^2)/2)
-    print("mem&")
     init_x = 340
     init_y = 250
     x_end = 775
@@ -59,7 +58,6 @@ def Euler(x0, y0, X, grid):
     xf, yf = x0, y0
     scale = abs((init_x - x_end)) / X
     init_x -= x0 * scale
-    print(init_x)
     x = ceil(x0 * grid)
     while x < ceil(X * grid):
         x, y = y_Euler(x0, y0, x, yf, xf, h)
@@ -149,7 +147,6 @@ def graph(listbox, x0, y0, X, grid):
     listbox.insert(END,"%6s %7s %15s" % (str(y1[0]), str(y1[1]), str(y1[2])))
     listbox.insert(END,"%6s %7s %40s" % (str(y2[0]), str(y2[1]), str(y2[2])))
     listbox.insert(END, "%6s %7s %65s" % (str(y3[0]), str(y3[1]), str(y3[2])))
-    print("Ti pidor")
 
 
 def All(self, listbox, x0, y0, X, grid):

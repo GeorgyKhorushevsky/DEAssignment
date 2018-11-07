@@ -24,6 +24,9 @@ def clean_error(grid):
 
     for y in range(-1000, 1000):
         canv2.create_line(0, y, c21, y, fill="white", arrow=LAST, width=0.1)
+    canv2.create_text(c21-20, 630 , text="grid", font="Verdana 14")
+    canv2.create_text(35, 5 , text="error", font="Verdana 14")
+
     for i in range(20):
         #label = Label(root2, text = str(640*i), font = "24")
         canv2.create_text(30, 630-(640*i)/20, text=str(640*i), font="Verdana 14")
@@ -87,18 +90,29 @@ rc_check = Checkbutton(root, text="Runge-Kutta method", font="50", variable=rc)
 
 
 
-def clean(canv):
+def clean(canv, init, X):
     x0, y0, xm, ym = 340, 250, 780, 20
     for y in range(-1000, 500):
 
         canv.create_line(x0 - 30, y, xm + 70, y, fill="white", arrow=LAST, width=0.1)
-
+    for i in range(0, 11, 1):
+        canv.create_text(x0+int((xm-x0)*(i/10)), y0+5, text = str(round((i*(X-init)/10),1)))
+    for i in range(0, 13):
+        canv.create_text(x0-3, 500-i*(500/12), text=str(i-6) )
     canv.create_line(x0 - 10, y0, xm + 10, y0, fill=default_color, arrow=LAST, width=0.1)
     canv.create_line(x0, ym - 10, x0, 2 * y0 - ym + 10, fill=default_color, arrow=FIRST, width=0.1)
     canv.create_line(x0 - 30, 0, x0 - 30, 500, fill="black", width=2)
+    canv.create_text(xm-5, y0-10, text="x")
+    canv.create_text(xm - 30, 20, text="red - exact")
+    canv.create_text(xm - 30, 35, text="green - Euler")
+    canv.create_text(xm - 30, 50, text="blue - Exact_i")
+    canv.create_text(xm - 30, 65, text="grey - Runge-Kutta")
+    canv.create_text(x0+3, 5, text="y")
 
 
-clean(canv)
+
+x0, X = 0, 5.5
+clean(canv, x0, X)
 
 
 def clean_but():
@@ -118,7 +132,7 @@ def try_again():
     root4.mainloop()
 def apply():
     grap = my_grap()
-    clean(canv)
+    clean(canv, float(entry_x0.get()), float(entry_X.get()))
     print(exact_g.get())
     print(euler.get())
     if (float(entry_grid.get())<=0):
